@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - {{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div style="text-align: center; font-size: 4em; margin-bottom: 20px;">
+                ⚠️
+            </div>
+            
+            <div class="header">
+                <h1>Oops! Something went wrong</h1>
+                <p>We encountered an issue processing your request.</p>
+            </div>
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                {% if back_url %}
+                <a href="{{ back_url }}" class="btn" style="display: inline-block; text-decoration: none; width: auto; padding: 15px 30px;">
+                    ← Go Back
+                </a>
+                {% else %}
+                <a href="/" class="btn" style="display: inline-block; text-decoration: none; width: auto; padding: 15px 30px;">
+                    ← Back to Registration
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Part of the FastAPI Learning Series | Udemy Course</p>
+        </div>
+    </div>
+</body>
+</html>

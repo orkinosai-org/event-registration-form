@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - {{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="header">
+                <h1>📧 Email Verification</h1>
+                <p>We've sent a verification code to your email</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="alert alert-success">
+                <strong>Verification code sent!</strong><br>
+                Please check your email inbox (and spam folder) for a message containing your 6-digit verification code.
+                {% if name %}
+                <br><br>Hi {{ name }}, we've sent the code to <strong>{{ email }}</strong>
+                {% endif %}
+            </div>
+
+            <form method="post" action="/verify">
+                <input type="hidden" name="email" value="{{ email }}">
+                
+                <div class="form-group">
+                    <label for="verification_code">Enter Verification Code *</label>
+                    <input type="text" id="verification_code" name="verification_code" 
+                           class="verification-code-input" required 
+                           placeholder="000000" maxlength="6" pattern="[0-9]{6}"
+                           title="Please enter the 6-digit code from your email">
+                </div>
+
+                <button type="submit" class="btn">
+                    Verify & Complete Registration ✅
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <p style="color: #718096; margin-bottom: 10px;">
+                    Didn't receive the email? Check your spam folder or wait a moment for delivery.
+                </p>
+                <a href="/" class="back-link">← Start over with a new registration</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Part of the FastAPI Learning Series | Udemy Course</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('verification_code');
+            const form = document.querySelector('form');
+            const submitBtn = document.querySelector('.btn');
+            
+            // Auto-format verification code input
+            codeInput.addEventListener('input', function(e) {
+                // Remove any non-digit characters
+                let value = e.target.value.replace(/\D/g, '');
+                // Limit to 6 digits
+                if (value.length > 6) {
+                    value = value.slice(0, 6);
+                }
+                e.target.value = value;
+                
+                // Auto-submit when 6 digits are entered
+                if (value.length === 6) {
+                    form.submit();
+                }
+            });
+            
+            // Form submission handler
+            form.addEventListener('submit', function(e) {
+                if (codeInput.value.length !== 6) {
+                    e.preventDefault();
+                    alert('Please enter a 6-digit verification code');
+                    return;
+                }
+                
+                submitBtn.textContent = 'Verifying... ⏳';
+                submitBtn.disabled = true;
+            });
+            
+            // Focus on code input when page loads
+            codeInput.focus();
+        });
+    </script>
+</body>
+</html>

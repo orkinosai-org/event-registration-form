@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration - {{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="header">
+                <h1>🎓 Event Registration</h1>
+                <p>Join our exciting learning events and advance your skills!</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="post" action="/register">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required 
+                           placeholder="Enter your full name" value="{% if form_data %}{{ form_data.name }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="Enter your email address" value="{% if form_data %}{{ form_data.email }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label>Select an Event *</label>
+                    {% for event in events %}
+                    <div class="event-option">
+                        <input type="radio" id="event_{{ event.id }}" name="event_id" value="{{ event.id }}" required
+                               {% if form_data and form_data.event_id == event.id %}checked{% endif %}>
+                        <label for="event_{{ event.id }}">
+                            <div class="event-name">{{ event.name }}</div>
+                            <div class="event-description">{{ event.description }}</div>
+                            <div class="event-details">
+                                📅 Starts: {{ event.date }} | ⏱️ Duration: {{ event.duration }}
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn">
+                    Register for Event 🚀
+                </button>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <p>Part of the FastAPI Learning Series | Udemy Course</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple form validation and UX improvements
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const submitBtn = document.querySelector('.btn');
+            const eventOptions = document.querySelectorAll('.event-option');
+            
+            // Add click handler to event options
+            eventOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Remove selected class from all options
+                    eventOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Form submission handler
+            form.addEventListener('submit', function(e) {
+                submitBtn.textContent = 'Registering... ⏳';
+                submitBtn.disabled = true;
+            });
+        });
+    </script>
+
+    <style>
+        .event-option.selected {
+            border-color: #667eea;
+            background-color: #f0f4ff;
+        }
+        
+        .event-option input[type="radio"]:checked + label {
+            color: #667eea;
+        }
+    </style>
+</body>
+</html>
