@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Complete - {{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="success-icon">
+                🎉
+            </div>
+            
+            <div class="header">
+                <h1>Registration Complete!</h1>
+                <p>Welcome to the event! Your registration has been confirmed.</p>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>Success!</strong> You have successfully registered for the event.
+            </div>
+
+            <div class="registration-details">
+                <h3>📋 Registration Details</h3>
+                <p><strong>Name:</strong> {{ registration.name }}</p>
+                <p><strong>Email:</strong> {{ registration.email }}</p>
+                <p><strong>Event:</strong> {{ registration.event.name }}</p>
+                <p><strong>Event Description:</strong> {{ registration.event.description }}</p>
+                <p><strong>Start Date:</strong> {{ registration.event.date }}</p>
+                <p><strong>Duration:</strong> {{ registration.event.duration }}</p>
+                <p><strong>Registered At:</strong> {{ registration.registered_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <div style="background-color: #e6fffa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #234e52; margin-bottom: 10px;">📚 What's Next?</h3>
+                    <p style="color: #285e61;">
+                        You'll receive additional information about the event, including:
+                        <br>• Course materials and resources
+                        <br>• Login credentials for the learning platform
+                        <br>• Schedule and important dates
+                        <br>• Community access and support channels
+                    </p>
+                </div>
+                
+                <a href="/" class="btn" style="display: inline-block; text-decoration: none; width: auto; padding: 15px 30px;">
+                    Register for Another Event 🚀
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Part of the FastAPI Learning Series | Udemy Course</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Thank you for joining our learning community! 🙏
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Celebration animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const successIcon = document.querySelector('.success-icon');
+            
+            // Add a bounce animation to the success icon
+            successIcon.style.animation = 'bounce 1s ease-in-out 3';
+            
+            // Confetti-like effect (simple)
+            setTimeout(() => {
+                createConfetti();
+            }, 500);
+        });
+        
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animation = 'fall linear infinite';
+                confetti.style.zIndex = '1000';
+                confetti.style.borderRadius = '50%';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, 5000);
+            }
+        }
+    </script>
+    
+    <style>
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</body>
+</html>
